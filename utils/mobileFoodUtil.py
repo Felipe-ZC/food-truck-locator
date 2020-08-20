@@ -12,7 +12,8 @@ class FoodTruckSchedule:
             try:
                 config = self.__getConfig()
                 self.url = config["host"]         
-            except Exception: raise
+            except Exception as e: 
+                raise RuntimeError(f"Missing or invalid config file: {e}")
 
     def __getConfig(self):
         scriptPath = os.path.dirname(os.path.realpath(__file__))
@@ -20,7 +21,12 @@ class FoodTruckSchedule:
         with open(filePath) as config:
             return json.load(config)
     
-    # Select all truck names and addresses that are currently open  
+    '''
+    Select all truck names and addresses that are currently open.
+    'Currently open' means that the truck is operating on the current
+    day of the week and the current time is between the start and end
+    times of the food truck.
+    '''
     def getOpenTrucksNow(self, limit, offset):
         '''
         weekday is an integer representation of the day of the week (Monday,Tuesday, etc.)
@@ -35,11 +41,8 @@ class FoodTruckSchedule:
     def processQuery(self, query):
         reqUrl = self.url + "?" + query 
         data = None
-        # Always encode request uri as specified in Socrata's API docs
-        response = requests.get(requote_uri(reqUrl))
-
+        response = requests.get(requote_uri(reqUrl)) # Always encode request uri as specified in Socrata's API docs
         if response.status_code == 200: data = response.json()
-        else: raise RuntimeError(response.json()) 
-        
+        else: response.raise_for_status()
         return data
 

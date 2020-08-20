@@ -45,4 +45,3 @@ like systems using the following command:
 chmod +x showOpenFoodTrucks.py
 ./showOpenFoodTrucks.py 
 ```
-

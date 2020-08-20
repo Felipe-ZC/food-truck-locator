@@ -4,9 +4,11 @@ import sys
 
 class FoodTruckFinder:
     def __init__(self):
-        try: self.fts = FoodTruckSchedule()
+        # To make testing easier I've hardcoded the URL, although 
+        # using a config file is the right way to go!
+        try: self.fts = FoodTruckSchedule("https://data.sfgov.org/resource/jjew-r69b.json")
         except Exception as e:
-            print(f"Error! Could not instantiate FoodTruckSchedule service:\n{e}")
+            print(f"Error! Could not instantiate FoodTruckSchedule service.\n{e}")
             sys.exit()
 
     def formatOutput(self, trucks):
@@ -27,8 +29,10 @@ class FoodTruckFinder:
                         break
                     print(self.formatOutput(nextRows) + "\n")
                     currPage += offset 
-                except Exception as e: raise
-
+                except Exception as e: 
+                    print(f"Error! Exception encountered while processing food truck data:\n{e}")
+                    break
+                    
 if __name__ == "__main__":
     print("Welcome to Food Truck Finder!")
     ftFinder = FoodTruckFinder()
