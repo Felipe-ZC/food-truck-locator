@@ -16,11 +16,11 @@ cd food-truck-locator/
 pip3 install -r requirements.txt # install dependencies 
 ```
 
-After installing dependencies, please create a config file in ```utils/``` 
-that contains the URL of the Mobile Food Schedule dataset:
+After installing dependencies, please create a JSON file named ```config.json```
+in ```utils/``` that contains the URL of the Mobile Food Schedule dataset:
 ```
 {
-	"host" : dataSetUrl
+	"host" : "https://data.sfgov.org/resource/jjew-r69b.json"
 }
 ```
 
@@ -29,5 +29,6 @@ is used, the user MUST specify the host url when creating a
 new ```FoodTruckSchedule``` object:
 
 ```
-ftFinder = FoodTruckFinder(dataSetUrl)
+dataSetUrl = "https://data.sfgov.org/resource/jjew-r69b.json"
+fts = FoodTruckShedule(dataSetUrl)
 ```
