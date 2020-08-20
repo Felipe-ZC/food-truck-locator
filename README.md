@@ -20,7 +20,7 @@ After installing dependencies, please create a JSON file named ```config.json```
 in ```utils/``` that contains the URL of the Mobile Food Schedule dataset:
 ```
 {
-	"host" : "https://data.sfgov.org/resource/jjew-r69b.json"
+"host" : "https://data.sfgov.org/resource/jjew-r69b.json"
 }
 ```
 
