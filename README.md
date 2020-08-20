@@ -9,7 +9,7 @@ Make sure you have ```python 3.4+``` and ```pip3``` installed!
 Please refer to their respective docs for installation support.
 
 Once you have python3 and pip3 working correctly on your system,
-run the following commands to install dependencies:
+run the following commands to clone this repo and install dependencies:
 ```
 git clone https://github.com/Felipe-ZC/food-truck-locator.git
 cd food-truck-locator/

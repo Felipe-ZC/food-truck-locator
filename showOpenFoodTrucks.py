@@ -28,8 +28,6 @@ class FoodTruckFinder:
                     print(self.formatOutput(nextRows) + "\n")
                     currPage += offset 
                 except Exception as e: raise
-                    # print(f"--- Runtime error ---\n{e}")
-                    # break
 
 if __name__ == "__main__":
     print("Welcome to Food Truck Finder!")
