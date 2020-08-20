@@ -12,19 +12,19 @@ from requests.utils import requote_uri
    $where=dayorder={day_of_week}
 '''
 class FoodTruckSchedule:
-    def __init__(self, apiHost="", configDir=""):
+    # Handle error when loading config file...
+    def __init__(self, apiHost=""):
         self.url = apiHost
         # If the host has not been provided, look in config file
         if not self.url:
-            config = self.__getConfig(configDir)
+            config = self.__getConfig()
             self.url = config["host"]         
 
-    def __getConfig(self, configDir=""):
+    def __getConfig(self):
         scriptPath = os.path.dirname(os.path.realpath(__file__))
         filePath = os.path.join(scriptPath, "config.json")
-        with open(configDir or filePath) as config:
+        with open(filePath) as config:
             return json.load(config)
-
     
     # Select all truck names and addresses that are currently open  
     def getOpenTrucksNow(self, limit, offset):
@@ -38,11 +38,7 @@ class FoodTruckSchedule:
         query = f"$select=applicant,location&$where=dayorder={weekday} and '{currHour}' >= start24 and '{currHour}' < end24&$limit={limit}&$offset={offset}&$order=applicant"
         return self.processQuery(query)
 
-    def getAllFoodTrucks(self, limit, offset):
-        query = f"$select=applicant,location&$limit={limit}&$offset={offset}&$order=applicant"
-        return self.processQuery(query)
-    
-    def processQuery(self, query=""):
+    def processQuery(self, query):
         reqUrl = self.url + "?" + query 
         data = None
         # Always encode request uri as specified in Socrata's API docs

@@ -1,11 +1,8 @@
 #!/usr/bin/env python
 from utils.mobile_food_util import FoodTruckSchedule
 
+# Document each class in readme 
 class FoodTruckFinder:
-    def __init__(self):
-        print("Welcome to Food Truck Finder!")
-        self.offset = 0
-    
     def formatOutput(self, trucks):
         outputStr = [f"\"{truck['applicant']}\" \"{truck['location']}\"" for truck in trucks]
         return "Name Address\n" + "\n".join(outputStr)
@@ -30,5 +27,6 @@ class FoodTruckFinder:
                     break
 
 if __name__ == "__main__":
+    print("Welcome to Food Truck Finder!")
     ftFinder = FoodTruckFinder()
     ftFinder.run()
