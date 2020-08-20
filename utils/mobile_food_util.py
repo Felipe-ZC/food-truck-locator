@@ -21,19 +21,31 @@ class FoodTruckSchedule:
 
     def __getConfig(self, configDir=""):
         scriptPath = os.path.dirname(os.path.realpath(__file__))
-        filePath = os.path.join(scriptPath, configDir or "config.json")
-        with open(filePath) as config:
+        filePath = os.path.join(scriptPath, "config.json")
+        with open(configDir or filePath) as config:
             return json.load(config)
 
+    
+    # Select all truck names and addresses that are currently open  
     def getOpenTrucksNow(self, limit, offset):
-        weekday = (datetime.today().weekday() + 1) % 7
-        currHour = str(datetime.now().strftime("%H:00"))
-        query = f"$select=applicant, location&$where=dayorder={weekday} and '{currHour}' >= start24 and end24 < '{currHour}'&$limit={limit}&$offset={offset}&$order=applicant"
-        return self.getNextRows(limit, offset, query)
+        '''
+        weekday is an integer representation of the day of the week (Monday,Tuesday, etc.)
+        Python and Socrata both use ints in the range [0,6] to represent but Python starts
+        counting position 0 at Monday while Socrata starts at Sunday.
+        '''
+        weekday = (datetime.today().weekday() + 1) % 7 # Compute Socrata day of week
+        currHour = str(datetime.now().strftime("%H:00")) # Current hour in 24-hour format
+        query = f"$select=applicant,location&$where=dayorder={weekday} and '{currHour}' >= start24 and '{currHour}' < end24&$limit={limit}&$offset={offset}&$order=applicant"
+        return self.processQuery(query)
 
-    def getNextRows(self, limit, offset, query=""):
+    def getAllFoodTrucks(self, limit, offset):
+        query = f"$select=applicant,location&$limit={limit}&$offset={offset}&$order=applicant"
+        return self.processQuery(query)
+    
+    def processQuery(self, query=""):
         reqUrl = self.url + "?" + query 
         data = None
+        # Always encode request uri as specified in Socrata's API docs
         response = requests.get(requote_uri(reqUrl))
 
         if response.status_code == 200: data = response.json()
