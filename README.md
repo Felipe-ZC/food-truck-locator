@@ -1,10 +1,10 @@
 # food-truck-locator
 A command-line utility that returns the names and addresses of all the currently open food trucks in San Francisco.
 
-# Supported Platforms
+### Supported Platforms
 Any Linux distro with kernel version 5.4
 
-# Setup
+### Setup
 Make sure you have ```python 3.4+``` and ```pip3``` installed!
 Please refer to their respective docs for installation support.
 
@@ -32,3 +32,17 @@ new ```FoodTruckSchedule``` object:
 dataSetUrl = "https://data.sfgov.org/resource/jjew-r69b.json"
 fts = FoodTruckShedule(dataSetUrl)
 ```
+
+### Running
+To execute the food-truck-locator script, run the following command
+in your terminal:
+```
+python3 showOpenFoodTrucks.py
+```
+We can make the showOpenFoodTrucks python script executable on Unix
+like systems using the following command:
+```
+chmod +x showOpenFoodTrucks.py
+./showOpenFoodTrucks.py 
+```
+

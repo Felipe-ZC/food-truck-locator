@@ -1,24 +1,18 @@
-#!/usr/bin/env python
 import requests
 import json
 import os
 from datetime import datetime
 from requests.utils import requote_uri
-'''
-1) Get current day of the week and hour
-2) Query using SoQL to get food trucks that are open
-   on the current day of the week:
-   $select=*
-   $where=dayorder={day_of_week}
-'''
+
 class FoodTruckSchedule:
-    # Handle error when loading config file...
     def __init__(self, apiHost=""):
         self.url = apiHost
         # If the host has not been provided, look in config file
         if not self.url:
-            config = self.__getConfig()
-            self.url = config["host"]         
+            try:
+                config = self.__getConfig()
+                self.url = config["host"]         
+            except Exception: raise
 
     def __getConfig(self):
         scriptPath = os.path.dirname(os.path.realpath(__file__))
