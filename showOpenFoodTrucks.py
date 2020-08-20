@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-from utils.mobile_food_util import FoodTruckSchedule
+from utils.mobileFoodUtil import FoodTruckSchedule
 
 # Document each class in readme 
 class FoodTruckFinder:

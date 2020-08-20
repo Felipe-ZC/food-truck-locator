@@ -15,6 +15,6 @@ script:
 git clone https://github.com/Felipe-ZC/food-truck-locator.git
 cd food-truck-locator/
 pip3 install -r requirements.txt # install dependencies 
-python3 show_open_food_trucks.py # run script
+python3 showOpenFoodTrucks.py # run script
 ```
 
