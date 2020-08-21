@@ -1,5 +1,7 @@
 __pycache__/*
 *.pyc
 *.png
+*.odt
+*.drawio
 writeUp*
 readme.txt
