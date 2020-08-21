@@ -7,14 +7,13 @@ Windows 10
 
 ### Setup
 Make sure you have ```python 3.7```  or higher and ```pip3``` installed!
+Please refer to their respective docs for installation support.
 You can check what version of python you are using by running:
 ```
 python --version 
 ```
 
 **This script will not work with any python version less than 3.7!**
-
-Please refer to their respective docs for installation support.
 
 Once you have python3 and pip3 working correctly on your system,
 run the following commands to clone this repo and install dependencies:
