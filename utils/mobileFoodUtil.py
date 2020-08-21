@@ -16,7 +16,7 @@ class FoodTruckSchedule:
                 config = self.__getConfig()
                 self.url = config["host"]         
             except Exception as e: 
-                raise RuntimeError(f"Error encountered while loading config file: {e}")
+                raise RuntimeError("Error encountered while loading config file: ", e)
 
     def __getConfig(self):
         scriptPath = os.path.dirname(os.path.realpath(__file__))
