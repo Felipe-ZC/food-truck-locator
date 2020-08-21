@@ -2,8 +2,9 @@
 A command-line utility that returns the names and addresses of all the currently open food trucks in San Francisco.
 
 ### Supported Platforms
-Any Linux distro with kernel version 5.4
-Windows 10
+
+- Any Linux distro with kernel version 5.4
+- Windows 10
 
 ### Setup
 Make sure you have ```python 3.7```  or higher and ```pip3``` installed!
