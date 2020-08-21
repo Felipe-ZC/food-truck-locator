@@ -22,7 +22,7 @@ class FoodTruckSchedule:
         with open(filePath) as config:
             return json.load(config)
     
-    def getOpenTrucksNow(self, limit, offset):
+    def getOpenTrucksNowPdt(self, limit, offset):
         '''
         Returns all food truck names and addresses that are currently open 
         at the current day and hour in San Francisco. This function uses time 
@@ -43,6 +43,24 @@ class FoodTruckSchedule:
         currHour = str(pdt.strftime("%H:00")) # Current hour in 24-hour format
         return self.getOpenTrucksAt(limit, offset, weekday, currHour)
 
+    def getOpenTrucksNow(self, limit, offset):
+        '''
+        Returns all food truck names and addresses that are currently open 
+        at the current day and hour using system time. 
+
+            Paramters:
+                limit (int): Max. number of rows to return
+                offset (int): Offset count into the results
+
+            Returns:
+                data (list): A list of dicts that contains the name and address of each food truck open currently.
+        '''
+        # Python and Socrata both use ints in the range [0,6] to represent days of the week 
+        # but Python's week starts on Monday while Socrata starts on Sunday.
+        weekday = (datetime.today().weekday() + 1) % 7 # Compute Socrata day of week
+        currHour = str(datetime.now().strftime("%H:00")) # Current hour in 24-hour format
+        return self.getOpenTrucksAt(limit, offset, weekday, currHour)
+    
     def getOpenTrucksAt(self, limit, offset, day, hour):
         '''
         Returns all food truck names and addresses that are currently open 
@@ -77,4 +95,3 @@ class FoodTruckSchedule:
         if response.status_code == 200: data = response.json()
         else: response.raise_for_status()
         return data
-
