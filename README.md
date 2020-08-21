@@ -3,10 +3,17 @@ A command-line utility that returns the names and addresses of all the currently
 
 ### Supported Platforms
 Any Linux distro with kernel version 5.4
+Windows 10
 
 ### Setup
-Make sure you have ```python 3.7``` and ```pip3``` installed!
+Make sure you have ```python 3.7```  or higher and ```pip3``` installed!
+You can check what version of python you are using by running:
+```
+python --version 
+```
+
 **This script will not work with any python version less than 3.7!**
+
 Please refer to their respective docs for installation support.
 
 Once you have python3 and pip3 working correctly on your system,
@@ -38,8 +45,9 @@ fts = FoodTruckShedule(dataSetUrl)
 To execute the food-truck-locator script, run the following command
 in your terminal:
 ```
-python3 showOpenFoodTrucks.py
+python showOpenFoodTrucks.py
 ```
+
 We can make the showOpenFoodTrucks python script executable on Unix
 like systems using the following command:
 ```
