@@ -23,6 +23,7 @@ class FoodTruckFinder:
             if userIn == 'n':                
                 print("Fetching food trucks...\n")
                 try:
+                    # Use system time by default...
                     nextRows = self.fts.getOpenTrucksNow(limit, currPage)
                     if not nextRows or len(nextRows) < limit:
                         print("There are no more food trucks open right now.")

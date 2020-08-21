@@ -22,28 +22,7 @@ class FoodTruckSchedule:
         with open(filePath) as config:
             return json.load(config)
     
-    def getOpenTrucksNowPdt(self, limit, offset):
-        '''
-        Returns all food truck names and addresses that are currently open 
-        at the current day and hour in San Francisco. This function uses time 
-        in PDT, if you wish to specify a different time please use getOpenTrucksAt.
-
-            Paramters:
-                limit (int): Max. number of rows to return
-                offset (int): Offset count into the results
-
-            Returns:
-                data (list): A list of dicts that contains the name and address of each food truck open currently.
-        '''
-        # Get current time in California
-        pdt = datetime.now(timezone("America/Los_Angeles"))
-        # Python and Socrata both use ints in the range [0,6] to represent days of the week 
-        # but Python's week starts on Monday while Socrata starts on Sunday.
-        weekday = (pdt.today().weekday() + 1) % 7 # Compute Socrata day of week
-        currHour = str(pdt.strftime("%H:00")) # Current hour in 24-hour format
-        return self.getOpenTrucksAt(limit, offset, weekday, currHour)
-
-    def getOpenTrucksNow(self, limit, offset):
+    def getOpenTrucksNow(self, limit, offset, tz=""):
         '''
         Returns all food truck names and addresses that are currently open 
         at the current day and hour using system time. 
@@ -51,14 +30,19 @@ class FoodTruckSchedule:
             Paramters:
                 limit (int): Max. number of rows to return
                 offset (int): Offset count into the results
+                tz (string): Optional timezone specifier, converts current system time
+                to the given timezone.
 
             Returns:
                 data (list): A list of dicts that contains the name and address of each food truck open currently.
         '''
+        try: timeObj = datetime.now() if not tz else datetime.now(timezone(tz))
+        except Exception as e: raise RuntimeError(f"Invalid timezone: {e}") 
         # Python and Socrata both use ints in the range [0,6] to represent days of the week 
         # but Python's week starts on Monday while Socrata starts on Sunday.
-        weekday = (datetime.today().weekday() + 1) % 7 # Compute Socrata day of week
-        currHour = str(datetime.now().strftime("%H:00")) # Current hour in 24-hour format
+        weekday = (timeObj.weekday() + 1) % 7 # Compute Socrata day of week
+        currHour = str(timeObj.strftime("%H:00")) # Current hour in 24-hour format
+        print(weekday, currHour)
         return self.getOpenTrucksAt(limit, offset, weekday, currHour)
     
     def getOpenTrucksAt(self, limit, offset, day, hour):
