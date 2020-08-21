@@ -5,7 +5,7 @@ A command-line utility that returns the names and addresses of all the currently
 Any Linux distro with kernel version 5.4
 
 ### Setup
-Make sure you have ```python 3.4+``` and ```pip3``` installed!
+Make sure you have ```python 3.7``` and ```pip3``` installed!
 Please refer to their respective docs for installation support.
 
 Once you have python3 and pip3 working correctly on your system,
