@@ -6,6 +6,7 @@ Any Linux distro with kernel version 5.4
 
 ### Setup
 Make sure you have ```python 3.7``` and ```pip3``` installed!
+**This script will not work with any python version less than 3.7!**
 Please refer to their respective docs for installation support.
 
 Once you have python3 and pip3 working correctly on your system,

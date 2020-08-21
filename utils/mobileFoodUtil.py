@@ -4,7 +4,6 @@ import os
 from datetime import datetime
 from pytz import timezone
 from requests.utils import requote_uri
-from .misc import isCorrectVersion 
 
 class FoodTruckSchedule:
     def __init__(self, apiHost=""):
@@ -12,11 +11,10 @@ class FoodTruckSchedule:
         # If the host has not been provided, look in config file
         if not self.url:
             try:
-                isCorrectVersion()
                 config = self.__getConfig()
                 self.url = config["host"]         
             except Exception as e: 
-                raise RuntimeError("Error encountered while loading config file: ", e)
+                raise RuntimeError(f"Error encountered while loading config file: {e}")
 
     def __getConfig(self):
         scriptPath = os.path.dirname(os.path.realpath(__file__))

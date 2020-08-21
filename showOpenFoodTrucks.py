@@ -1,6 +1,4 @@
 #!/usr/bin/env python3
-from utils.misc import isCorrectVersion 
-isCorrectVersion() # Make sure current python version >= 3.7
 from utils.mobileFoodUtil import FoodTruckSchedule
 import sys
 
