@@ -42,7 +42,6 @@ class FoodTruckSchedule:
         # but Python's week starts on Monday while Socrata starts on Sunday.
         weekday = (timeObj.weekday() + 1) % 7 # Compute Socrata day of week
         currHour = str(timeObj.strftime("%H:00")) # Current hour in 24-hour format
-        print(weekday, currHour)
         return self.getOpenTrucksAt(limit, offset, weekday, currHour)
     
     def getOpenTrucksAt(self, limit, offset, day, hour):
