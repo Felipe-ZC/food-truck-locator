@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
-from utils.mobileFoodUtil import FoodTruckSchedule
 from utils.misc import isCorrectVersion 
+isCorrectVersion() # Make sure current python version >= 3.7
+from utils.mobileFoodUtil import FoodTruckSchedule
 import sys
 
 class FoodTruckFinder:
@@ -8,11 +9,9 @@ class FoodTruckFinder:
         # To make testing easier I've hardcoded the URL, although 
         # using a config file is the right way to go!
         try: 
-            isCorrectVersion() # Make sure current python version >= 3.7
             self.fts = FoodTruckSchedule("https://data.sfgov.org/resource/jjew-r69b.json")
         except Exception as e:
-            # Don't use an F string here...
-            print("Error! Could not instantiate FoodTruckSchedule service.\n", e)
+            print(f"Error! Could not instantiate FoodTruckSchedule service.\n{e}")
             sys.exit()
 
     def formatOutput(self, trucks):
