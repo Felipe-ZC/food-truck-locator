@@ -5,7 +5,7 @@ from requests.utils import requote_uri
 class FoodTruckSchedule:
     def __init__(self, apiHost=""):
         self.url = apiHost
-
+    
     def getTrucksOpenAt(self, limit, offset, day, time):
         '''
         Returns all food truck names and addresses that are currently open 
@@ -27,22 +27,20 @@ class FoodTruckSchedule:
                  f"$offset={offset} &"
                  f"$order=applicant")
         return self.processQuery(query)
-    
+ 
     def processQuery(self, query):
         '''
         Returns the result of a SoQL query as a list of dicts. Each dict contains
         the attributes specified in the select clause of the given query. 
 
             Paramters:
-                query(string): SoQL query
+                query (string): SoQL query
 
             Returns:
                 data (list): A list of dicts containing the results of the given query.
         '''
         reqUrl = self.url + "?" + query 
-        data = None
         # Always encode request uri as specified in Socrata's API docs
-        response = requests.get(requote_uri(reqUrl)) 
-        if response.status_code == 200: data = response.json()
-        else: response.raise_for_status()
-        return data
+        response = requests.get(requote_uri(reqUrl), headers={'content-type':'application/json'}) 
+        if response.status_code >= 400: response.raise_for_status()
+        return response.json()
