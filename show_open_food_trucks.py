@@ -3,8 +3,6 @@ from food_truck_utils.food_truck_finder import FoodTruckFinder
 
 class ShowOpenFoodTrucks: 
     def __init__(self):
-        # To make testing easier I've hardcoded the URL, although
-        # using a config file is the right way to go!
         self.food_finder = FoodTruckFinder()
 
     def run(self, limit=10, offset=10, tz=""):
@@ -12,23 +10,31 @@ class ShowOpenFoodTrucks:
         try:
             # For all the open food trucks...
             for trucks in self.food_finder.get_next_open_trucks(limit, offset, tz):
-                print(self.food_finder.format_output(trucks) + "\n")
+                print(self.format_output(trucks) + "\n")     
                 if len(trucks) < limit:
                     break
-
-                user_in = ""
-                while user_in != "n":
-                    user_in = input(
-                        f"Press 'n' to load the next {limit} food trucks or 'q' to quit: "
-                    )
-                    if user_in == "q":
-                        return
-            
+                if not self.shouldGetNextRows(limit):
+                    return
             print("There are no more open food trucks right now.")
         except Exception as e:
             print(
                 f"Error! Exception encountered while processing food truck data:\n{e}"
             )
+
+    def shouldGetNextRows(self, limit):
+        user_in = ""
+        while user_in != "n" and user_in != "q":
+            user_in = input(
+                f"Press 'n' to load the next {limit} food trucks or 'q' to quit: "
+            )
+        return user_in == "n"
+
+    def format_output(self, trucks):
+        output = [
+            f"\"{truck['applicant']}\" \"{truck['location']}\"" for truck in trucks
+        ]
+        return "Name Address\n" + "\n".join(output)
+
 
 if __name__ == "__main__":
     app = ShowOpenFoodTrucks()
