@@ -56,7 +56,7 @@ class FoodTruckFinder:
             and address of the food truck.
         """
         page_start = 0
-        trucks = self.get_trucks_open_now(limit, page_start)
+        trucks = self.get_trucks_open_now(limit, page_start, _tz)
 
         while trucks:
             yield trucks
