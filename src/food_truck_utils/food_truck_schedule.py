@@ -7,7 +7,8 @@ class FoodTruckSchedule:
         self.url = host_url
 
     def get_trucks_open_at(self, limit, offset, day, time):
-        """Returns all food truck names and addresses that are currently open
+        """
+        Returns all food truck names and addresses that are currently open
         at the given day and hour. Results are sorted by food truck name.
 
         Paramters:
@@ -32,7 +33,8 @@ class FoodTruckSchedule:
         return self.process_query(query)
 
     def process_query(self, query):
-        """Returns the result of a SoQL query as a list of dicts. Each dict
+        """
+        Returns the result of a SoQL query as a list of dicts. Each dict
         contains the attributes specified in the select clause of the given
         query.
 

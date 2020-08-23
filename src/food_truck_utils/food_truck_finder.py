@@ -2,17 +2,18 @@ from datetime import datetime
 from pytz import timezone
 from .food_truck_schedule import FoodTruckSchedule
 
-# limit, offset and timezone as instance vars?
+# limit, offset and timezonei, and time as instance vars?
 
 
 class FoodTruckFinder:
-    def __init__(self):
+    def __init__(self, isQuiet=False):
         # To make testing easier I've hardcoded the URL, although
         # using a config file is the right way to go!
         self.fts = FoodTruckSchedule(
             "https://data.sfgov.org/resource/jjew-r69b.json")
+        self.quiet = isQuiet
 
-    def get_trucks_open_now(self, limit, offset, _tz="", quiet=False):
+    def get_trucks_open_now(self, limit, offset, _tz=""):
         time_obj = self.__get_time_obj(_tz)
 
         # Python and Socrata both use ints in the range [0,6] to represent days of the week
@@ -21,7 +22,7 @@ class FoodTruckFinder:
         # Current hour and minutes in 24-hour format
         curr_time = time_obj.strftime("%H:%M")
 
-        if not quiet:
+        if not self.quiet:
             print(self.__get_loading_msg(time_obj))
 
         return self.fts.get_trucks_open_at(limit, offset, weekday, curr_time)
@@ -47,5 +48,6 @@ class FoodTruckFinder:
     @staticmethod
     def __get_loading_msg(time_obj):
         return (
-            f"Looking for food trucks open on {time_obj.strftime('%A, %m/%d/%Y at %I:%M %p')}...\n"
+            f"Looking for food trucks open on "  
+            f"{time_obj.strftime('%A, %m/%d/%Y at %I:%M %p')}...\n"
         )
