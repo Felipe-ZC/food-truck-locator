@@ -8,15 +8,17 @@ class ShowOpenFoodTrucks:
 
     def run(self, limit=10, offset=10, time_zone=""):
         """
-        Retrieves and displays open food trucks in San Francisco.
+        Retrieves and displays open food trucks in San Francisco,
+        at the current local time.
+
         Program fetches and displays 'limit' items, waits for user
         input to fetch and display the next 'limit' items.
 
-        Paramters:
+        Parameters:
             limit (int): Max. number of rows to return
             offset (int): Offset count into the results
-            timezone (string): A string representation of the TZ database
-                               to use when calculating local time.
+            time_zone (string): A string representation of the TZ database
+                                to use when calculating local time.
         Returns:
             None
         """
@@ -35,11 +37,20 @@ class ShowOpenFoodTrucks:
         except KeyboardInterrupt:
             print("\nInterrupted")
             sys.exit(0)
-        except (RuntimeError, HTTPError) as err:
+        except (ValueError, RuntimeError, HTTPError) as err:
             print(
                 f"Error! Exception encountered while processing food truck data:\n{err}"
             )
+            sys.exit(1)
 
+    @staticmethod
+    def format_output(trucks):
+        output = [
+            f"\"{truck['applicant']}\" \"{truck['location']}\""
+            for truck in trucks
+        ]
+        return "Name Address\n" + "\n".join(output)
+    
     @staticmethod
     def should_get_next_rows(limit):
         '''Prompts user for input until they enter 'n' or 'q'.
@@ -51,10 +62,3 @@ class ShowOpenFoodTrucks:
             )
         return user_in == "n"
 
-    @staticmethod
-    def format_output(trucks):
-        output = [
-            f"\"{truck['applicant']}\" \"{truck['location']}\""
-            for truck in trucks
-        ]
-        return "Name Address\n" + "\n".join(output)

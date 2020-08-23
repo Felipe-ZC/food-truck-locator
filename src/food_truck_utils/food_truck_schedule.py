@@ -11,8 +11,10 @@ class FoodTruckSchedule:
         """
         Returns all food truck names and addresses that are currently open
         at the given day and hour. Results are sorted by food truck name.
-
-        Paramters:
+        Raises HTTPError on failed queries, raises ValueError when response
+        body contains invalid JSON.
+        
+        Parameters:
             limit (int): Max. number of rows to return
             offset (int): Offset count into the results
             day (int): An integer ranging from [0,6] representing the day of
@@ -21,8 +23,12 @@ class FoodTruckSchedule:
                            that is, the current hour and minutes ("%H:%M")
 
         Returns:
-            data (list): A list of dicts that contains the name and address of
-                         each food truck open at the given time.
+            A JSON object containing the name and addresses of
+            each food truck open at the given time.
+        
+        Raises:
+            HTTPError: On response status codes >= 400.
+            ValueError: When response body contains invalid JSON.
         """
         # Implicit concatenation...
         query = (
@@ -37,18 +43,30 @@ class FoodTruckSchedule:
         """
         Returns the result of a SoQL query as a list of dicts. Each dict
         contains the attributes specified in the select clause of the given
-        query.
+        query. Raises HTTPError on failed queries, raises ValueError when 
+        response body contains invalid JSON.
 
-        Paramters:
+        Parameters:
             query (string): SoQL query
 
         Returns:
-            data (list): A list of dicts containing the results of the given query.
+            A JSON object containing the results of the given query
+
+        Raises:
+            HTTPError: On response status codes >= 400.
+            ValueError: When response body contains invalid JSON.
         """
         req_url = self.url + "?" + query
         # Always encode request uri as specified in Socrata's API docs
         response = requests.get(requote_uri(req_url),
                                 headers={"content-type": "application/json"})
+        
         if response.status_code >= 400:
-            response.raise_for_status()
-        return response.json()
+            response.raise_for_status() 
+        
+        try:
+            data = response.json()
+        except ValueError as err:
+            raise ValueError(f"Response contains invalid JSON: {err}")
+
+        return data
