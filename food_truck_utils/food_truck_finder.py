@@ -1,4 +1,4 @@
-from .utils.mobile_food_util import FoodTruckSchedule
+from .food_truck_schedule import FoodTruckSchedule
 from datetime import datetime
 from pytz import timezone
 

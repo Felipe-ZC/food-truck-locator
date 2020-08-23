@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-from src.food_finder import FoodTruckFinder
+from food_truck_utils.food_truck_finder import FoodTruckFinder
 
 class ShowOpenFoodTrucks: 
     def __init__(self):
