@@ -1,3 +1,4 @@
+import sys
 from requests.exceptions import HTTPError
 from .food_truck_utils.food_truck_finder import FoodTruckFinder
 
@@ -30,6 +31,10 @@ class ShowOpenFoodTrucks:
                 if not self.should_get_next_rows(limit):
                     return
             print("There are no more open food trucks right now.")
+        # Hide KeyboardInterrupt stacktrace
+        except KeyboardInterrupt:
+            print("\nInterrupted")
+            sys.exit(0)
         except (RuntimeError, HTTPError) as err:
             print(
                 f"Error! Exception encountered while processing food truck data:\n{err}"
