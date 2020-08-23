@@ -4,6 +4,7 @@ from requests.utils import requote_uri
 
 class FoodTruckSchedule:
     def __init__(self, host_url=""):
+        # The URL of Mobile Food Schedule dataset...
         self.url = host_url
 
     def get_trucks_open_at(self, limit, offset, day, time):

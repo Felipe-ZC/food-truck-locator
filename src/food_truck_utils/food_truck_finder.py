@@ -1,23 +1,34 @@
 from datetime import datetime
 from pytz import timezone
+from pytz.exceptions import UnknownTimeZoneError
 from .food_truck_schedule import FoodTruckSchedule
-
-# limit, offset and timezonei, and time as instance vars?
-
 
 class FoodTruckFinder:
     def __init__(self, isQuiet=False):
-        # To make testing easier I've hardcoded the URL, although
+        # For the sake of the interview I've hardcoded the URL, although
         # using a config file is the right way to go!
         self.fts = FoodTruckSchedule(
             "https://data.sfgov.org/resource/jjew-r69b.json")
-        self.quiet = isQuiet
+        self.quiet = isQuiet # Hide/Show loading message
 
     def get_trucks_open_now(self, limit, offset, _tz=""):
-        time_obj = self.__get_time_obj(_tz)
+        """
+        Retrieves and displays open food trucks in San Francisco
+        at the current local time.
 
-        # Python and Socrata both use ints in the range [0,6] to represent days of the week
-        # but Python's week starts on Monday while Socrata starts on Sunday.
+        Paramters:
+            limit (int): Max. number of rows to return
+            offset (int): Offset count into the results
+            _tz (string): A string representation of the TZ database
+                          to use when calculating local time.
+        Returns:
+            List of JSON objects, each object contains the name
+            and address of the food truck.
+        """
+        time_obj = self.__get_time_obj(_tz)
+        # Python and Socrata both use ints in the range [0,6] to
+        # represent days of the week but Python's week starts on
+        # Monday while Socrata starts on Sunday.
         weekday = (time_obj.weekday() + 1) % 7
         # Current hour and minutes in 24-hour format
         curr_time = time_obj.strftime("%H:%M")
@@ -28,6 +39,22 @@ class FoodTruckFinder:
         return self.fts.get_trucks_open_at(limit, offset, weekday, curr_time)
 
     def get_next_open_trucks(self, limit, offset, _tz=""):
+        """
+        Retrieves all open food trucks in San Francisco using the
+        generator pattern. Every time this function is called it
+        fetches the next 'limit' items until it recieves an empty
+        response.
+
+        Paramters:
+            limit (int): Max. number of rows to return
+            offset (int): Offset count into the results
+            timezone (string): A string representation of the TZ database
+                               to use when calculating local time.
+
+        Returns:
+            List of JSON objects, each object contains the name
+            and address of the food truck.
+        """
         page_start = 0
         trucks = self.get_trucks_open_now(limit, page_start)
 
@@ -38,16 +65,21 @@ class FoodTruckFinder:
 
     @staticmethod
     def __get_time_obj(_tz=""):
+        '''Returns the local time as a datetime object. Takes in an
+        optional timezone parameter that is the TZ database name'''
         try:
             time_obj = datetime.now() if not _tz else datetime.now(
                 timezone(_tz))
-        except Exception as err:
+        except UnknownTimeZoneError as err:
             raise RuntimeError(f"Invalid timezone: {err}")
         return time_obj
 
     @staticmethod
     def __get_loading_msg(time_obj):
+        '''Takes in a datetime object and returns a string
+        representing a loading message containing the current
+        date and time.'''
         return (
-            f"Looking for food trucks open on "  
+            f"Looking for food trucks open on "
             f"{time_obj.strftime('%A, %m/%d/%Y at %I:%M %p')}...\n"
         )
