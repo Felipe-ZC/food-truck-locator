@@ -16,7 +16,6 @@ class ShowOpenFoodTrucks:
             offset (int): Offset count into the results
             timezone (string): A string representation of the TZ database
                                to use when calculating local time.
-
         Returns:
             None
         """
