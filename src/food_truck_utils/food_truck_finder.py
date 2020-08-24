@@ -3,13 +3,13 @@ from pytz import timezone
 from pytz.exceptions import UnknownTimeZoneError
 from .food_truck_schedule import FoodTruckSchedule
 
+
 class FoodTruckFinder:
     def __init__(self, isQuiet=False):
         # For the sake of the interview I've hardcoded the URL, although
         # using a config file is a better approach!
-        self.fts = FoodTruckSchedule(
-            "https://data.sfgov.org/resource/jjew-r69b.json")
-        self.quiet = isQuiet # Hide/Show loading message
+        self.fts = FoodTruckSchedule("https://data.sfgov.org/resource/jjew-r69b.json")
+        self.quiet = isQuiet  # Hide/Show loading message
 
     def get_trucks_open_now(self, limit, offset, _tz=""):
         """
@@ -75,21 +75,20 @@ class FoodTruckFinder:
 
     @staticmethod
     def get_time_obj(_tz=""):
-        '''Returns the local time as a datetime object. Takes in an
+        """Returns the local time as a datetime object. Takes in an
         optional timezone parameter that is the TZ database name
-        Raises ValueError if _tz is invalid'''
+        Raises ValueError if _tz is invalid"""
         try:
-            time_obj = datetime.now() if not _tz else datetime.now(
-                timezone(_tz))
+            time_obj = datetime.now() if not _tz else datetime.now(timezone(_tz))
         except UnknownTimeZoneError as err:
             raise ValueError(f"Invalid timezone: {err}")
         return time_obj
 
     @staticmethod
     def get_loading_msg(time_obj):
-        '''Takes in a datetime object and returns a string
+        """Takes in a datetime object and returns a string
         representing a loading message containing the current
-        date and time.'''
+        date and time."""
         return (
             f"Looking for food trucks open on "
             f"{time_obj.strftime('%A, %m/%d/%Y at %I:%M %p')}...\n"

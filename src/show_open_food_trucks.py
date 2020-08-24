@@ -1,6 +1,7 @@
 import sys
-from requests.exceptions import HTTPError
+from requests.exceptions import HTTPError, ConnectionError
 from .food_truck_utils.food_truck_finder import FoodTruckFinder
+
 
 class ShowOpenFoodTrucks:
     def __init__(self):
@@ -37,7 +38,11 @@ class ShowOpenFoodTrucks:
         except KeyboardInterrupt:
             print("\nInterrupted")
             sys.exit(0)
-        except (ValueError, RuntimeError, HTTPError) as err:
+        # Hide stacktrace on EOF(^D on linux, ^Z on windows)
+        except EOFError:
+            print("\nEOF.")
+            sys.exit(0)
+        except (ValueError, RuntimeError, HTTPError, ConnectionError) as err:
             print(
                 f"Error! Exception encountered while processing food truck data:\n{err}"
             )
@@ -50,15 +55,14 @@ class ShowOpenFoodTrucks:
             for truck in trucks
         ]
         return "Name Address\n" + "\n".join(output)
-    
+
     @staticmethod
     def should_get_next_rows(limit):
-        '''Prompts user for input until they enter 'n' or 'q'.
-        Returns True if the last value entered was 'n'.'''
+        """Prompts user for input until they enter 'n' or 'q'.
+        Returns True if the last value entered was 'n'."""
         user_in = ""
-        while user_in not in ('n', 'q'):
+        while user_in not in ("n", "q"):
             user_in = input(
                 f"Press 'n' to load the next {limit} food trucks or 'q' to quit: "
             )
         return user_in == "n"
-

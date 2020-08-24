@@ -36,7 +36,8 @@ class FoodTruckSchedule:
             f"$where=dayorder={day} and '{time}' >= start24 and '{time}' < end24 &"
             f"$limit={limit} &"
             f"$offset={offset} &"
-            f"$order=applicant")
+            f"$order=applicant"
+        )
         return self.process_query(query)
 
     def process_query(self, query):
@@ -58,12 +59,13 @@ class FoodTruckSchedule:
         """
         req_url = self.url + "?" + query
         # Always encode request uri as specified in Socrata's API docs
-        response = requests.get(requote_uri(req_url),
-                                headers={"content-type": "application/json"})
-        
+        response = requests.get(
+            requote_uri(req_url), headers={"content-type": "application/json"}
+        )
+
         if response.status_code >= 400:
-            response.raise_for_status() 
-        
+            response.raise_for_status()
+
         try:
             data = response.json()
         except ValueError as err:
