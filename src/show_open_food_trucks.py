@@ -40,7 +40,7 @@ class ShowOpenFoodTrucks:
             sys.exit(0)
         # Hide stacktrace on EOF(^D on linux, ^Z on windows)
         except EOFError:
-            print("\nEOF.")
+            print("\nError! EOF reached while reading input.")
             sys.exit(1)
         except (ValueError, RuntimeError, HTTPError, ConnectionError) as err:
             print(
