@@ -41,7 +41,7 @@ class ShowOpenFoodTrucks:
         # Hide stacktrace on EOF(^D on linux, ^Z on windows)
         except EOFError:
             print("\nEOF.")
-            sys.exit(0)
+            sys.exit(1)
         except (ValueError, RuntimeError, HTTPError, ConnectionError) as err:
             print(
                 f"Error! Exception encountered while processing food truck data:\n{err}"
